@@ -1,8 +1,5 @@
 from typing import Optional, Union
 
-from meopasl.heroes.models.units_stack import UnitsStack
-
-
 # TODO: Implement methods
 
 
@@ -12,28 +9,33 @@ class Cast:
         return '<Cast {}>'.format(self.__class__.__name__)
 
 
+# noinspection PyUnresolvedReferences
 class Punish(Cast):
-    def __call__(self, unit_stack: UnitsStack):
+    def __call__(self, unit_stack: 'UnitsStack'):
         pass
 
 
+# noinspection PyUnresolvedReferences
 class Curse(Cast):
-    def __call__(self, unit_stack: UnitsStack):
+    def __call__(self, unit_stack: 'UnitsStack'):
         pass
 
 
+# noinspection PyUnresolvedReferences
 class Weak(Cast):
-    def __call__(self, unit_stack: UnitsStack):
+    def __call__(self, unit_stack: 'UnitsStack'):
         pass
 
 
+# noinspection PyUnresolvedReferences
 class Speed(Cast):
-    def __call__(self, unit_stack: UnitsStack):
+    def __call__(self, unit_stack: 'UnitsStack'):
         pass
 
 
+# noinspection PyUnresolvedReferences
 class Resurrection(Cast):
-    def __call__(self, unit_stack: UnitsStack):
+    def __call__(self, unit_stack: 'UnitsStack'):
         pass
 
 
