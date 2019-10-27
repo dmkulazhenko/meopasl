@@ -1,5 +1,5 @@
 from typing import List, Iterable
-from copy import deepcopy
+from copy import copy
 
 from .units_stack import UnitsStack
 
@@ -8,16 +8,27 @@ class Army:
     """Implements army, consisting maximum of 6 units stacks."""
     MAX_COUNT = 6
 
-    class MaxCountUnitsException(Exception):
+    class MaxCountUnitsException(OverflowError):
         """Exception matters, that max count of units reached."""
         def __init__(self):
             super().__init__("Max count of stacks in one army is {}"
                              .format(Army.MAX_COUNT))
 
-    class StackNotFound(Exception):
-        """Exception matters, that you trying ."""
+    class StackNotFound(ValueError):
+        """
+        Exception matters, that you trying to remove stack,
+        that doesn't exist.
+        """
         def __init__(self, stack):
-            super().__init__("Stack {} cannot found in army.".format(stack))
+            super().__init__("Cannot found Stack {} in army.".format(stack))
+
+    class IndexError(IndexError):
+        """
+        Exception matters, that you trying to remove stack by index,
+        but index doesn't exist.
+        """
+        def __init__(self, idx):
+            super().__init__("Index {} out of range.".format(idx))
 
     def __init__(self, stacks: List[UnitsStack]):
         """Initializes army.
@@ -31,7 +42,7 @@ class Army:
     @property
     def stacks(self) -> List[UnitsStack]:
         """Getter for stack of units."""
-        return deepcopy(self._stacks)
+        return copy(self._stacks)
 
     def add_stack(self, stack: UnitsStack) -> None:
         """Adds stack of units to army.
@@ -59,18 +70,33 @@ class Army:
         """
         return stack in self._stacks
 
-    def __delitem__(self, stack: UnitsStack) -> None:
-        """Removes stack of units from army.
+    def __getitem__(self, idx: int) -> UnitsStack:
+        """Get UnitStack by index.
 
-        Hook for Army.remove_stack().
-
-        :param stack: Stack of units.
+        :param idx: Index of UnitsStack in Army.stacks
         """
-        self.remove_stack(stack)
+        try:
+            return self.stacks[idx]
+        except IndexError:
+            raise self.IndexError(idx)
+
+    def __delitem__(self, idx: int) -> None:
+        """Removes stack of units from army by index.
+
+        :param idx: Index of UnitsStack in Army.stacks
+        """
+        try:
+            del self._stacks[idx]
+        except IndexError:
+            raise Army.IndexError(idx)
 
     def __iter__(self) -> Iterable[UnitsStack]:
         """Iterates over stack of units."""
-        return deepcopy(self._stacks).__iter__()
+        return copy(self._stacks).__iter__()
+
+    def __len__(self) -> int:
+        """Get count of stacks in Army."""
+        return len(self._stacks)
 
     def __repr__(self) -> str:
         """Represents army to human-presentable view."""
