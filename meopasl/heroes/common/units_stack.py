@@ -1,6 +1,6 @@
 from copy import copy
 
-from .units.unit import units_type
+from meopasl.heroes.units.unit import units_type
 
 
 class UnitsStack:

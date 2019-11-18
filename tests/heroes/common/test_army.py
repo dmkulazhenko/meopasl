@@ -1,15 +1,12 @@
 import pytest
 from copy import copy
 
-from meopasl.heroes.models.army import Army
-from meopasl.heroes.models.units_stack import UnitsStack
-from meopasl.heroes.models.units.unit import Griffin
+from meopasl.heroes.common.army import Army
+from meopasl.heroes.common.units_stack import UnitsStack
+from tests.heroes.common.fixtures import unit_stack, army
 
 
-@pytest.fixture
-def unit_stack():
-    """Get UnitStack object."""
-    return UnitsStack(Griffin(), 123)
+__fixtures__ = [unit_stack, army]
 
 
 @pytest.mark.parametrize('cnt', (
@@ -24,12 +21,6 @@ def test_army_max_cnt(cnt, unit_stack):
         army = Army([unit_stack] * cnt)
         with pytest.raises(Army.MaxCountUnitsException):
             army.add_stack(unit_stack)
-
-
-@pytest.fixture
-def army(unit_stack):
-    """Get army object."""
-    return Army([unit_stack] * 3)
 
 
 def test_army_stack_modify(army, unit_stack):

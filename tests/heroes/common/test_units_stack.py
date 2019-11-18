@@ -1,7 +1,7 @@
 import pytest
 
-from meopasl.heroes.models.units_stack import UnitsStack
-from meopasl.heroes.models.units.unit import Griffin
+from meopasl.heroes.common.units_stack import UnitsStack
+from meopasl.heroes.units.unit import Griffin
 
 
 @pytest.mark.parametrize('cnt', (

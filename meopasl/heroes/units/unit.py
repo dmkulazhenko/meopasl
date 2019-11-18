@@ -12,7 +12,7 @@ class Unit:
         self.health: int = 0
         self.attack: int = 0
         self.armor: int = 0
-        self.damage: int = 0
+        self.damage: Tuple[int, int] = (0, 0)
         self.lead: int = 0
         self.skills: Tuple[Skills, ...] = tuple()
         self.cast: casts_type = None
