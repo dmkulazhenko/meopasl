@@ -58,14 +58,17 @@ def test_defend_and__undefend(battle_unit_stack):
 def test_attack(battle_unit_stacks):
     """Tests attack method."""
     f_stack, s_stack = battle_unit_stacks
+    f_count, s_count = f_stack.count, s_stack.count
     f_stack.attack(s_stack)
-    assert f_stack.count != s_stack.count
+    assert f_stack.count != f_count
+    assert s_stack.count != s_count
     assert not f_stack.actions[BattleUnitsStack.Actions.ATTACK]
     f_stack.end_move()
     assert f_stack.actions[BattleUnitsStack.Actions.ATTACK]
     f_stack.unit.damage = (100000, 100000)
     f_stack.attack(s_stack)
     assert not s_stack.is_alive
+    assert f_stack.is_alive
     assert not f_stack.actions[BattleUnitsStack.Actions.ATTACK]
     f_stack.end_move()
     assert f_stack.actions[BattleUnitsStack.Actions.ATTACK]
@@ -104,3 +107,7 @@ def test_cast(battle_unit_stack):
     cast.assert_called_once_with(
         count=battle_unit_stack.count, unit_stack=battle_unit_stack
     )
+    with pytest.raises(
+            battle_unit_stack.ActionNotAvailable
+    ), mock.patch.object(battle_unit_stack.unit, 'cast', None):
+        battle_unit_stack.cast(battle_unit_stack)

@@ -9,6 +9,7 @@ def some_interface(actions, other: 'BattleArmy'):
     for stack in other.queue.queue:
         if stack.is_alive:
             return BattleUnitsStack.Actions.ATTACK, stack
+    return BattleUnitsStack.Actions.DEFEND, None
 
 
 class BattleArmy:

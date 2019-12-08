@@ -4,6 +4,7 @@ from functools import wraps
 from typing import List, Callable, Tuple, Dict, Any, Optional
 
 from meopasl.heroes.common.units_stack import UnitsStack
+from meopasl.heroes.units.skills import Skills
 from meopasl.heroes.units.unit import units_type
 
 
@@ -100,31 +101,48 @@ class BattleUnitsStack:
         self.__getattribute__(action.value)(other)
 
     @_Decorators.make_used
-    def attack(self, unit_stack: 'BattleUnitsStack', *_args) -> None:
+    def attack(
+            self, unit_stack: 'BattleUnitsStack',
+            *_args, _fight_back=False
+    ) -> None:
         """Attack other battle stack."""
+        armor = (0 if Skills.PRECISE_SHOT in self.unit.skills
+                 else unit_stack.unit.armor)
         cnt = (self.count * self.unit.damage[0],
                self.count * self.unit.damage[1])
-        if self.unit.attack > unit_stack.unit.armor:
+        if self.unit.attack > armor:
             dmgr = (
                 cnt[0] * (1 + 0.05 *
-                          (self.unit.attack - unit_stack.unit.armor)),
+                          (self.unit.attack - armor)),
                 cnt[1] * (1 + 0.05 *
-                          (self.unit.attack - unit_stack.unit.armor))
+                          (self.unit.attack - armor))
             )
         else:
             dmgr = (
                 cnt[0] / (1 + 0.05 *
-                          (unit_stack.unit.armor - self.unit.attack)),
+                          (armor - self.unit.attack)),
                 cnt[1] / (1 + 0.05 *
-                          (unit_stack.unit.armor - self.unit.attack))
+                          (armor - self.unit.attack))
             )
         dead_count = int(randint(*map(int, dmgr)) // unit_stack.unit.health)
         unit_stack.count = max(0, unit_stack.count - dead_count)
+        if (
+                Skills.SHOOTER not in self.unit.skills
+                and Skills.SHOOTER not in unit_stack.unit.skills
+                and Skills.IRRESISTIBLE not in self.unit.skills
+                and unit_stack.is_alive
+                and not _fight_back
+        ):
+            unit_stack.attack(self, _fight_back=True)
 
     @_Decorators.make_used
     def cast(self, unit_stack: 'BattleUnitsStack', *_args) -> None:
         """Defines unit's cast method."""
-        self.unit.cast(count=self.count, unit_stack=unit_stack)
+        if self.unit.cast:
+            self.unit.cast(count=self.count, unit_stack=unit_stack)
+        else:
+            raise BattleUnitsStack.ActionNotAvailable(
+                BattleUnitsStack.Actions.CAST)
 
     @_Decorators.make_used
     def defend(self, *_args) -> None:

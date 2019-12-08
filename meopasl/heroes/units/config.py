@@ -52,21 +52,20 @@ class UnitsStats:
         (Skills.SHOOTER, Skills.PRECISE_SHOT), None
     )
     SKELETON = _get_stats_dict(
-        UnitsNames.SKELETON, 5, 1, 2, (1, 1), 10, (Skills.UNDEAD,), None
+        UnitsNames.SKELETON, 5, 1, 2, (1, 1), 10, tuple(), None
     )
     FURY = _get_stats_dict(
         UnitsNames.FURY, 16, 5, 3, (5, 7), 16, (Skills.IRRESISTIBLE,), None
     )
     HYDRA = _get_stats_dict(
         UnitsNames.HYDRA, 80, 15, 12, (7, 14), 7,
-        (Skills.SPLASH, Skills.IRRESISTIBLE), None
+        (Skills.IRRESISTIBLE,), None
     )
     ANGEL = _get_stats_dict(
         UnitsNames.ANGEL, 180, 27, 27, (45, 45), 11, tuple(), Punish()
     )
     BONE_DRAGON = _get_stats_dict(
-        UnitsNames.BONE_DRAGON, 150, 27, 28, (15, 30), 11,
-        (Skills.UNDEAD,), Curse()
+        UnitsNames.BONE_DRAGON, 150, 27, 28, (15, 30), 11, tuple(), Curse()
     )
     DEMON = _get_stats_dict(
         UnitsNames.DEMON, 166, 27, 25, (36, 66), 11, tuple(), Weak()
@@ -75,12 +74,12 @@ class UnitsStats:
         UnitsNames.CYCLOPS, 85, 20, 15, (18, 26), 10, (Skills.SHOOTER,), None
     )
     GRIFFIN = _get_stats_dict(
-        UnitsNames.GRIFFIN, 30, 7, 5, (5, 10), 15, (Skills.INF_RESIST,), None
+        UnitsNames.GRIFFIN, 30, 7, 5, (5, 10), 15, tuple(), None
     )
     SHAMAN = _get_stats_dict(
         UnitsNames.SHAMAN, 40, 12, 10, (7, 12), 10, tuple(), Speed()
     )
     LICH = _get_stats_dict(
         UnitsNames.LICH, 50, 15, 15, (12, 17), 10,
-        (Skills.UNDEAD, Skills.SHOOTER), Resurrection()
+        (Skills.SHOOTER,), Resurrection()
     )
